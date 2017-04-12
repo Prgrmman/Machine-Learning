@@ -1,16 +1,63 @@
 #!/usr/bin/python3
 '''
-A python script designed to plot any two attributes from our datasets.
+A python script designed to plot any two attributes from Portugal dataset
 Useful for visualizing correlation
 
-Currently only useful for the Portugal dataset
 
 outputs graph as plot.png
 
 
 === Notes on non-numeric data ===
 There exists non-numeric data that we wish to analyze.
-Consider adding conversions to analyze such data
+Note, some data does not not start at 0 because of shared keys
+For data that has yes,no:
+-> no = 0
+-> yes = 1
+
+sex:
+-> M = 0
+-> F = 1
+
+address:
+-> "U" urban = 0
+-> "R" rural = 1
+
+famsize:
+-> "LE3" = 0
+-> "GT3" = 1
+
+Pstatus:
+-> "T" together = 0
+-> "A" apart = 1
+
+Mjob:
+-> teacher = 0
+-> health = 1
+-> services = 2
+-> at_home = 3
+-> other = 4
+
+Fjob: 
+-> teacher = 0
+-> health = 1
+-> services = 2
+-> at_home = 3
+-> other = 4
+
+reason:
+home = 1
+reputation = 2
+course = 3
+other = 4
+
+gaurdian:
+-> "mother" = 2
+-> "father" = 3
+-> "other" = 4
+
+
+
+
 
 '''
 
@@ -18,6 +65,7 @@ import matplotlib.pyplot as plt
 import csv
 import sys
 import numpy as np
+
 
 # Class definitions
 
@@ -44,6 +92,9 @@ class DataSet:
 # Global definitions
 outFile = 'plot.png'
 portugalPath = '../data/portugal/'
+nominalDict = {'M': 0, 'F': 1, 'U': 0, 'R': 1,'LE3':0, 'GT3':1, 'T':0, 'A':1, 'teacher': 0, 'health':1,
+        'services':2, 'at_home':3, 'other': 4, 'home':1, 'reputation':2, 'course': 3, 'mother':2, 'father':3,
+        'no':0, 'yes': 1}
 
 # read csv and return a tuple.
 # first element in tuple is labels, second element is a list of lists of the data
@@ -53,6 +104,9 @@ def readCSV(filePath):
     with open(filePath, 'r') as f:
         reader = csv.reader(f)
         table = list(reader)
+    # remove first column from table
+    for i in range(len(table)):
+        table[i] = table[i][1:]
     labels = table[0]
     table = table[1:]
     # convert integer data
@@ -60,6 +114,9 @@ def readCSV(filePath):
         for c, elem in enumerate(line):
             if elem.isdigit():
                 table[r][c] = int(elem)
+            # handle non numeric data
+            else: 
+                table[r][c] = nominalDict.get(elem, -1)
     return DataSet(table, labels)
 
 # given a numpy list of values, return true if they are all numeric
@@ -86,8 +143,6 @@ def main(args):
     labelY = dataSet.labels[index2]
     print("independent index:",index1,"; label:",labelX)
     print("dependent index:",index2,"; label:",labelY)
-    print(len(dataX))
-    print(len(dataY))
 
     # check if data is numeric
     if not isDataNumberic(dataX):
@@ -98,7 +153,6 @@ def main(args):
         return
 
     # plot the data
-    # plt.plot(dataX,dataY, 'ro')
     plt.plot(np.unique(dataX), np.poly1d(np.polyfit(dataX, dataY, 1))(np.unique(dataX)))
     fig, ax = plt.subplots()
     fit = np.polyfit(dataX,dataY, deg=1)
@@ -109,6 +163,7 @@ def main(args):
     plt.savefig(outFile)
 
     print("Success!")
+    print(dataSet.table[2])
 
 
 if __name__ == '__main__':
