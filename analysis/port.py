@@ -153,7 +153,6 @@ def main(args):
         return
 
     # plot the data
-    plt.plot(np.unique(dataX), np.poly1d(np.polyfit(dataX, dataY, 1))(np.unique(dataX)))
     fig, ax = plt.subplots()
     fit = np.polyfit(dataX,dataY, deg=1)
     ax.plot(dataX,fit[0] * dataX + fit[1], color='red')
