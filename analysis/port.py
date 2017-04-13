@@ -54,12 +54,9 @@ gaurdian:
 -> "mother" = 2
 -> "father" = 3
 -> "other" = 4
-
-
-
-
-
 '''
+
+# TODO add normalization
 
 import matplotlib.pyplot as plt
 import csv
@@ -126,6 +123,18 @@ def isDataNumberic(data):
             return False
     return True
 
+# gets max value in table 
+# returns tuple of column and value
+def getMax(table):
+    index = 0
+    value = 0
+    for line in table:
+        for i in range(len(line)):
+            if line[i] > value:
+                value = line[i]
+                index = i
+    return (index, value)
+
 
 def main(args):
     if len(args) != 3:
@@ -161,8 +170,11 @@ def main(args):
     plt.ylabel(labelY)
     plt.savefig(outFile)
 
+    # print the Pearson correlation coefficient
+    print(np.corrcoef(dataX,dataY)[0,1])
+    print(getMax(dataSet.table))
+
     print("Success!")
-    print(dataSet.table[2])
 
 
 if __name__ == '__main__':
