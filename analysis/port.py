@@ -123,29 +123,10 @@ def isDataNumberic(data):
             return False
     return True
 
-# gets max value in table 
-# returns tuple of column and value
-def getMax(table):
-    index = 0
-    value = 0
-    for line in table:
-        for i in range(len(line)):
-            if line[i] > value:
-                value = line[i]
-                index = i
-    return (index, value)
-
-
-def main(args):
-    if len(args) != 3:
-        print("use: plotter.py var-index-1 var-index-2")
-        return
-    fileName = portugalPath + 'student-mat.csv'
+# correlate
+def correlate(index1, index2, setName = 'student-mat.csv'):
+    fileName = portugalPath + setName
     dataSet = readCSV(fileName)
-
-    # show the user which attributes they selected
-    index1 = int(args[1])
-    index2 = int(args[2])
     dataX = np.array([row[index1] for row in dataSet.table]) # independent variable
     dataY = np.array([row[index2] for row in dataSet.table]) # dependent variable
     labelX = dataSet.labels[index1]
@@ -172,9 +153,19 @@ def main(args):
 
     # print the Pearson correlation coefficient
     print(np.corrcoef(dataX,dataY)[0,1])
-    print(getMax(dataSet.table))
 
     print("Success!")
+
+
+def main(args):
+    if len(args) != 3:
+        print("use: plotter.py var-index-1 var-index-2")
+        return
+
+    # show the user which attributes they selected
+    index1 = int(args[1])
+    index2 = int(args[2])
+    correlate(index1,index2)
 
 
 if __name__ == '__main__':
