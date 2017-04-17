@@ -29,10 +29,12 @@ g3_score_train, g3_score_test, absences_train, absences_test = cross_validation.
 model = LinearRegression()
 model.fit(g3_score_train,absences_train)
 
+
 # prints summary of of regression
-est = olsModel = sm.OLS(g3_score_train, absences_train)
-est2 = est.fit()
-print(est2.summary())
+X = sm.add_constant(absences_train)
+olsModel = sm.OLS(g3_score_train, X)
+est = olsModel.fit()
+print(est.summary())
 
 
 
