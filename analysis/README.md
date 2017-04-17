@@ -5,3 +5,4 @@ Required Libraries: (can be installed using pip):
 * matplotlib
 * numpy
 * sklearn
+* statsmodels

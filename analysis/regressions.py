@@ -1,7 +1,10 @@
+#!/usr/bin/python
 import csv
 import numpy
 from sklearn.linear_model import LinearRegression
 from sklearn import cross_validation
+import statsmodels.api as sm
+from scipy import stats
 
 portugalPath = '../data/portugal/student-mat.csv'
 with open(portugalPath, 'r') as f:
@@ -25,4 +28,11 @@ g3_score_train, g3_score_test, absences_train, absences_test = cross_validation.
 #use linear regression model
 model = LinearRegression()
 model.fit(g3_score_train,absences_train)
+
+# prints summary of of regression
+est = olsModel = sm.OLS(g3_score_train, absences_train)
+est2 = est.fit()
+print(est2.summary())
+
+
 
