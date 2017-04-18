@@ -60,9 +60,9 @@ Main
 
 def main(args):
     if len(args) != 3:
-        print("usage: ./feature-test.py dataset sig-level (percent)")
+        print("usage: ./port-feature.py dataset sig-level (percent)")
         print("Example: run f-tests on student-mat.csv with 5.6 percent significance level")
-        print("./feature-test.py student-mat.csv 5.6")
+        print("./port-feature.py student-mat.csv 5.6")
         return
 
 
