@@ -1,0 +1,74 @@
+0.1
+Testing school
+1.5661990923e-13
+Testing sex
+0.000981528706137
+Testing age
+0.00661211528866
+Testing address
+1.76415346092e-05
+Testing famsize
+0.252133221666
+Failed!
+Testing Pstatus
+0.984705825944
+Failed!
+Testing Medu
+5.75222889928e-10
+Testing Fedu
+5.11652032256e-08
+Testing Mjob
+Nominal!
+8.30514988495e-06
+Testing Fjob
+Nominal!
+0.0113762806236
+Testing reason
+Nominal!
+1.34164228749e-06
+Testing guardian
+Nominal!
+0.0722623950337
+Testing traveltime
+0.00116735728849
+Testing studytime
+1.09080859061e-10
+Testing failures
+1.93415326978e-25
+Testing schoolsup
+0.0909710384658
+Testing famsup
+0.131886512042
+Failed!
+Testing paid
+0.162441248636
+Failed!
+Testing activities
+0.128099059505
+Failed!
+Testing nursery
+0.464645243098
+Failed!
+Testing higher
+3.49965959283e-18
+Testing internet
+0.000124891734475
+Testing romantic
+0.0210024715247
+Testing famrel
+0.106817520017
+Failed!
+Testing freetime
+0.00173748394582
+Testing goout
+0.0255698745678
+Testing Dalc
+1.43203591168e-07
+Testing Walc
+5.99949327986e-06
+Testing health
+0.01174877308
+Testing absences
+0.0198956239392
+Selected 23 feature(s)
+['school', 'sex', 'age', 'address', 'Medu', 'Fedu', 'Mjob', 'Fjob', 'reason', 'guardian', 'traveltime', 'studytime', 'failures', 'schoolsup', 'higher', 'internet', 'romantic', 'freetime', 'goout', 'Dalc', 'Walc', 'health', 'absences']
