@@ -52,6 +52,7 @@ def dataTest(X, Y):
 # constructs linear regression and performs f-test
 # X and Y are lists of values (string form)
 def fTest(X,Y):
+
     pass
 
 # does chi-square test for independence
@@ -60,7 +61,9 @@ def chiSquareTest(X,Y):
     pass
 
 
-
+# returns a numpy matrix with dummy values assigned
+def handleDummy(X):
+    pass
 
 
 def main(args):
