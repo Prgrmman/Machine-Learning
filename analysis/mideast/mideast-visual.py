@@ -27,8 +27,11 @@ translate = {'F': 0, 'M': 1, 'S': 1, 'KW': 0, 'lebanon': 1, 'KW': 1,
 
 def main(args):
 
-    if len(args) != 3:
+    if len(args) != 3 and len(args) != 4:
         print("run as: ./mideast-visual.py attribute1 attribute2")
+
+    elif len(args) == 4:
+        output = args[3]
 
     #read in data and seperate labels
     infile = open(path, 'r')

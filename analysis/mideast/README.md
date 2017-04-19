@@ -1,4 +1,4 @@
-#Running the mid-east visualization script
+# Running the mid-east visualization script
 *Parameters:
   1. The independent variable to plot (goes on the x-axis)
   1. The dependent variable to plot
