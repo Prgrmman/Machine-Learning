@@ -5,6 +5,7 @@ import csv
 import scipy as stats
 import statsmodels.api as sm
 import numpy as np
+from regressions import handleNominal
 
 
 '''
@@ -42,7 +43,7 @@ def dataTest(X, Y):
     if isNumeric(X) and isNumeric(Y):
         return fTest(X,Y)
     elif isNumeric(X) and not isNumeric(Y):
-        return fTest(X,Y)
+        return fTest(Y,X)
     elif isNumeric(Y) and not isNumeric(X):
         return fTest(X,Y)
     elif not isNumeric(X) and not isNumeric(Y):
@@ -51,6 +52,7 @@ def dataTest(X, Y):
 
 # constructs linear regression and performs f-test
 # X and Y are lists of values (string form)
+# X can be nominal, but Y will always be numeric
 def fTest(X,Y):
 
     pass
@@ -76,8 +78,8 @@ def main(args):
 
     X = matrix[1:, 11]
     Y = matrix[1:, 16]
-    print(isNumeric(X))
-    print(X)
+    # print(isNumeric(X))
+    # print(X)
 
 if __name__ == '__main__':
     main(sys.argv)

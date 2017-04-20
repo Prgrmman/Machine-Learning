@@ -4,6 +4,7 @@ import numpy as np
 import statsmodels.api as sm
 import sys
 from scipy import stats
+from regressions import handleNominal
 
 
 '''
@@ -22,37 +23,6 @@ binaryDict = {'GP':0,'MS':1 ,'M': 0, 'F': 1, 'U': 0, 'R': 1,'LE3':0, 'GT3':1, 'T
 nominalPairs = [8,9,10,11]
 portugalPath = '../data/portugal/'
 
-'''
-Functions
-'''
-# function that handles nominal variables
-# second parameter should be passed g3_score
-# third parameter is data matrix
-# returns p-value from ftest
-def handleNominal(index, dependent, matrix):
-    feature = matrix[1:, index]
-    numFeatrues = feature.size
-    valueSet = set(list(feature))
-    valueList = list(valueSet)
-    valueList.sort()
-    # create dummy variables. For k possible values, create k-1 values
-    dummys = [[0] * numFeatrues for i in range(len(valueList)-1)]
-
-    # go through all values
-    for i,value in enumerate(list(feature)):
-        valueIndex = valueList.index(value)
-        if valueIndex >= len(dummys):
-            continue
-        dummys[valueIndex][i] = 1
-        
-    dummys = np.array(dummys)
-    dummys = dummys.T
-    dummys = dummys.astype(np.float)
-    X = sm.add_constant(dummys)
-    olsModel = sm.OLS(dependent, X)
-    est = olsModel.fit()
-    return est.f_pvalue
-    
 
 '''
 Main
@@ -92,15 +62,10 @@ def main(args):
         print("Testing", label)
         if i in nominalPairs:
             print("Nominal!")
-            pvalue = handleNominal(i,g3_score, matrix)
-            print(pvalue)
-            if pvalue > sigLevel:
-                print("Failed!")
-            else:
-                selectedFeatures.append(label)
-            continue
-        indep = indep.astype(np.float)
-        indep = indep.reshape(-1,1)
+            indep = handleNominal(indep)
+        else:
+            indep = indep.astype(np.float)
+            indep = indep.reshape(-1,1)
 
         # prints summary of of regression
         X = sm.add_constant(indep)
