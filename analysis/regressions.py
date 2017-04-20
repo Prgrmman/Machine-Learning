@@ -15,7 +15,6 @@ def convertToBinary(feature, itemMappedToZero):
 
 #returns matrix of sub features
 def handleNominal(feature):
-    print(feature)
     numFeatrues = feature.size
     valueSet = set(list(feature))
     valueList = list(valueSet)
