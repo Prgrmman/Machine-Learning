@@ -1,0 +1,13 @@
+﻿This report details my approach for multinational logistic regression.
+My reading material can be found here:  http://www.statisticssolutions.com/mlr/
+
+I will be looking at student performance at different levels. For the middle east data set, score is already segmented into three levels: low, medium, and high.
+
+I will convert the Portugal data into three levels. The student score is nominal, but I will apply a low, medium, and high metric to the score.
+
+I will run several experiments:
+I will run both math and Portugal language datasets with f-test-selected features and evaluate performance
+I will run both math and Portugal language datasets without f-test selected features
+I will run both math and Portugal language datasets with L2 regularization.
+I will run the middle east dataset with and without L2 regularization.
+    

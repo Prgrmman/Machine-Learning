@@ -1,0 +1,7 @@
+﻿This document contains the process and methodology that I used to select features. In terms of data quality, there were no missing values and only a few outliers, so most of my work went into selection and not cleaning.
+
+I made two base assumptions when doing my selection. First, I assumed that the features were independent. Secondly, I assumed a linear relationship between all features and the target G3 student scores.
+
+My methodology was to determine the statistical significance of linear relationships between various features and student score. To do this, I used one-way ANOVA on the coefficients (weights) from the resulting linear models.
+
+
