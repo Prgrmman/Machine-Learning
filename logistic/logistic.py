@@ -35,8 +35,8 @@ def parseData(feature):
     try:
         feature = feature.astype(np.int)
     except ValueError:
-        print("Whoops")
-    return feature.T
+        return handleNominal(feature)
+    return feature.reshape(len(feature), 1)
 
 '''
 Runs the multinomial logistic regression
@@ -56,16 +56,19 @@ def runLogistic(matrix, features_list_indexes, target_index, penalty_term):
         features.append(feature)
     
     # build dataset again
-    data = features[0].reshape(len(matrix)-1, 1)
+    data = parseData(features[0])
     for feature in features[1:]:
-        feature = feature.reshape(len(matrix)-1, 1)
+        feature = parseData(feature)
         data = np.hstack((data, feature))
-    target = matrix[1:, target_index].reshape(len(matrix)-1, 1)
+    target = matrix[1:, target_index]
 
     data_train, data_test, target_train, target_test = cross_validation.train_test_split(data, target, test_size = 0.2)
 
-    
-    
+    logreg = LogisticRegression(C=penalty_term, multi_class='multinomial', solver='newton-cg') 
+    logreg.fit(data_train, target_train)
+
+    predictions = logreg.predict(data_test)
+    print(predictions)
 
 
 def main(args):
@@ -73,7 +76,13 @@ def main(args):
     portugal_math_matrix = readData(portugal_math_path)
     portugal_por_matrix = readData(portugal_por_path)
 
-    runLogistic(middle_east_matrix, [0,1,2], 16, 0)
+    print("running middle east")
+    print("Selecting features:\n")
+    indexes = list(range(16))
+    for index in indexes:
+        label = middle_east_matrix[0, index]
+        print(label)
+    runLogistic(middle_east_matrix, indexes, 16, 0.001)
     
 
 
