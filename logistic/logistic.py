@@ -39,6 +39,30 @@ def parseData(feature):
         return handleNominal(feature)
     return feature.reshape(len(feature), 1)
 
+# turns a numeric variable into nominal feature
+def makeNominal(feature, num_levels):
+    """
+    feature: (numpy array)
+    num_levels: the number of levels you wish to split the value into
+    """
+    feature = feature.astype(np.int)
+    max_value = max(list(feature))
+
+    levels = [0]
+    for i in range(num_levels - 1):
+        value = max_value * ((i+1)/(num_levels))
+        levels.append(value)
+
+    for i, value in enumerate(feature):
+        for j in range(num_levels-1):
+            if levels[j] <= value < levels[j+1]:
+                feature[i] = j
+        j = num_levels - 1
+        if value >= levels[j]:
+            feature[i] = j
+    return feature
+
+
 '''
 Runs the multinomial logistic regression
 
@@ -72,27 +96,108 @@ def runLogistic(matrix, features_list_indexes, target_index, penalty_term):
     accuracy = accuracy_score(target_test, predictions)
     return accuracy
 
+# runs 20 tests and returns the average
+def averageTest(matrix, features_list_indexes, target_index, penalty):
+    total = 0
+    for i in range(20):
+        accuracy = runLogistic(matrix, features_list_indexes, target_index, penalty)
+        print("Accuracy:", accuracy)
+        total += accuracy
+    print("Average accuracy for 20 iterations:" ,total / 20)
+
 def main(args):
     middle_east_matrix = readData(middle_east_path)
     portugal_math_matrix = readData(portugal_math_path)
     portugal_por_matrix = readData(portugal_por_path)
 
     print("running middle east")
-    print("Selecting features:\n")
+    print("\nSelecting features:")
     indexes = list(range(16))
     for index in indexes:
         label = middle_east_matrix[0, index]
         print(label)
     
-    # run average accuracy with 0.5 L2 penalty
-    total = 0
-    for i in range(20):
-        accuracy = runLogistic(middle_east_matrix, indexes, 16, 0.5)
-        print("Accuracy:", accuracy)
-        total += accuracy
-    print("Average accuracy for 20 iterations:" ,total / 20)
-    
+    '''
+    running on middle east data
+    run average accuracy with 0.5 L2 penalty
+    '''
+    averageTest(middle_east_matrix, indexes, 16, 0.5)
 
+    '''
+    Running portugal math data with no feature selection
+    Don't select index 0: it just contains which school they went too
+    '''
+    scores = portugal_math_matrix[1:,31]
+    scores = makeNominal(scores,3)
+    portugal_math_matrix[1:,31] = scores
+    print("running portugal math scores at 3 levels")
+    print("\nSelecting features:")
+    indexes = list(range(1,30))
+    for index in indexes:
+        label = portugal_math_matrix[0,index]
+        print(label)
+
+    averageTest(portugal_math_matrix, indexes, 31, 0.01)
+    
+    '''
+    Running portugal math data with features selected from 10% significance level
+    '''
+    print("running portugal math scores at 3 levels with f-tested features at 10% sig level")
+    print("\nSelecting features:")
+    indexes = [1,2,3,6,7,8,12,13,14,17,20,21,22,25]
+    for index in indexes:
+        label = portugal_math_matrix[0,index]
+        print(label)
+
+    averageTest(portugal_math_matrix, indexes, 31, 0.1)
+
+    '''
+    Running portugal math scores at 3 levels with f-tested features at 5% significance level
+    '''
+    print("running portugal math scores at 3 levels with f-tested features at 5% sig level")
+    print("\nSelecting features:")
+    indexes = [1,2,3,6,7,8,12,14,17,20,22,25]
+    for index in indexes:
+        label = portugal_math_matrix[0,index]
+        print(label)
+    averageTest(portugal_math_matrix, indexes, 31, 0.001)
+
+    '''
+    Running protugal language scores with no feature selection. Uses three score levels
+    Don't select index 0: it just contains which school they went too
+    '''
+    scores = portugal_por_matrix[1:,31]
+    scores = makeNominal(scores,3)
+    portugal_por_matrix[1:,31] = scores
+    print("running portugal language scores at 3 levels")
+    print("\nSelecting features:")
+    indexes = list(range(1,30))
+    for index in indexes:
+        label = portugal_por_matrix[0,index]
+        print(label)
+    averageTest(portugal_por_matrix, indexes, 31, 0.5)
+
+    '''
+    Running protugal language scores at 3 levels with f-tested features at 10% significance level
+    '''
+    print("running portugal language scores at 3 levels with f-tested features at 10% sig level")
+    print("\nSelecting features:")
+    indexes = [0,1,2,3,6,7,8,9,12,11,12,13,14,15,20,21,22,24,25,26,27,28,29]
+    for index in indexes:
+        label = portugal_por_matrix[0,index]
+        print(label)
+    averageTest(portugal_por_matrix, indexes, 31, 0.5)
+
+    '''
+    Running protugal language scores at 3 levels with f-tested features at 5% significance level
+    '''
+    print("running portugal language scores at 3 levels with f-tested features at 5% sig level")
+    print("\nSelecting features:")
+    indexes = [0,1,2,3,6,7,8,9,10,12,13,14,20,22,24,25,26,27,28,29]
+    for index in indexes:
+        label = portugal_por_matrix[0,index]
+        print(label)
+    averageTest(portugal_por_matrix, indexes, 31, 0.5)
 
 if __name__ == '__main__':
     main(sys.argv)

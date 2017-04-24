@@ -22,7 +22,69 @@ I ran the model 20 times and took an average of the model’s accuracy for diffe
 0.1: approx 74%
 0.5: approx 76%
 
-Results on the potugal datasets
+Results on the potugal datasets:
+I’m first going to start with no feature selection and use L2 regularization.
+
+Results on the Portuguese math scores.
+0.001: approx 57%
+0.01: approx 60%
+0.05: approx 60%
+0.1: approx 60%
+0.5: approx 57%
+
+
+Next, I use the f-tested features at 10% significance level:
+Results on the Portuguese math scores.
+0.001: approx 57%
+0.01 approx 57%
+0.1: approx 57%
+0.5: approx 55%
+
+Next, I use the f-tested features at 5% significance levels:
+Results on the Portuguese math scores.
+0.001: approx 58%
+0.01: approx 58%
+0.05: approx 58%
+0.1: approx 56%
+0.5: approx 56%
+
+
+Results on Portuguese langauge scores:
+I’m first going to start with no feature selection and use L2 regularization.
+Results on Portuguese language scores.
+0.001: approx 62%
+0.01: approx 66%
+0.05: approx 66%
+0.1: approx 65%
+0.5: approx 65%
+
+Next, I use the f-tested features at 10% significance level: (note, few features were removed)
+Results on Portuguese language scores.
+0.001: approx 61%
+0.01: 66%
+0.05: 66%
+0.1: 66%
+0.5: 66%
+
+Next, I use the f-tested features at 5% significance level:
+Results on Portuguese language scores.
+0.001: 62%
+0.01: 66%
+0.05: 66%
+0.1: 66%
+0.5: 65%
+
+
+Concluding comments:
+Overall, it appears that our feature selection technique did not hurt the performance of the logistic regression, with the possible exception of the Portuguese math scores. However, this experiment did demonstrate that many of that features may be removed from the various Portugal data sets without hurting performance, which speaks to those features’ relevance. 
+
+
+
+
+
+
+
+
 
 
 
