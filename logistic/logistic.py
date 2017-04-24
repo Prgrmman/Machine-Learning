@@ -2,6 +2,7 @@
 
 from sklearn.linear_model import LogisticRegression
 from sklearn import cross_validation
+from sklearn.metrics import accuracy_score
 import csv
 import sys
 import numpy as np
@@ -62,14 +63,14 @@ def runLogistic(matrix, features_list_indexes, target_index, penalty_term):
         data = np.hstack((data, feature))
     target = matrix[1:, target_index]
 
-    data_train, data_test, target_train, target_test = cross_validation.train_test_split(data, target, test_size = 0.2)
+    data_train, data_test, target_train, target_test = cross_validation.train_test_split(data, target, test_size = 0.33)
 
     logreg = LogisticRegression(C=penalty_term, multi_class='multinomial', solver='newton-cg') 
     logreg.fit(data_train, target_train)
 
     predictions = logreg.predict(data_test)
-    print(predictions)
-
+    accuracy = accuracy_score(target_test, predictions)
+    return accuracy
 
 def main(args):
     middle_east_matrix = readData(middle_east_path)
@@ -82,7 +83,14 @@ def main(args):
     for index in indexes:
         label = middle_east_matrix[0, index]
         print(label)
-    runLogistic(middle_east_matrix, indexes, 16, 0.001)
+    
+    # run average accuracy with 0.5 L2 penalty
+    total = 0
+    for i in range(20):
+        accuracy = runLogistic(middle_east_matrix, indexes, 16, 0.5)
+        print("Accuracy:", accuracy)
+        total += accuracy
+    print("Average accuracy for 20 iterations:" ,total / 20)
     
 
 

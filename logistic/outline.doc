@@ -10,4 +10,22 @@ I will run both math and Portugal language datasets with f-test-selected feature
 I will run both math and Portugal language datasets without f-test selected features
 I will run both math and Portugal language datasets with L2 regularization.
 I will run the middle east dataset with and without L2 regularization.
-    
+   
+
+Results on the middle east dataset:
+The model uses a random 2/3 splits for training and test data.
+I ran the model 20 times and took an average of the model’s accuracy for different L2 penalty values. I did this by manually changing the script. My model peaked out around 76% accuracy. Here are the results of my experiments:
+
+0.001: approx 63%
+0.01: approx 66%
+0.05: approx 70%
+0.1: approx 74%
+0.5: approx 76%
+
+Results on the potugal datasets
+
+
+
+
+
+
