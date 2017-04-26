@@ -142,25 +142,36 @@ def main(args):
 
 	averagedPrediction = numpy.zeros(math.ceil((0.33*len(training_data))))
 	averagedPrediction = averagedPrediction.reshape(len(averagedPrediction),1)
-
+	averagedError = averagedPrediction
 
 	for i in range(1,10):
 
 		#divide into train and test sets randomly, 10 times, and average the predictions
 		training_data_train, training_data_test, g3_score_train, g3_score_test = cross_validation.train_test_split(training_data, g3_score, test_size=0.33)
 		model.fit(training_data_train, g3_score_train)
+
 		prediction = model.predict(training_data_test)
+		error = numpy.abs(numpy.subtract(prediction,g3_score_test))
+
 		averagedPrediction = numpy.add(averagedPrediction,prediction)
+		averagedError = numpy.add(averagedError,error)
 
 	for i,j in enumerate(averagedPrediction):
 		averagedPrediction[i] = j/10
-	print(averagedPrediction)
+	for i,j in enumerate(averagedError):
+		averagedError[i] = j/10
+
+	plt.hist(averagedError)
+	plt.xlabel("prediction error")
+	plt.ylabel("number of examples")
+	plt.show()
 
 if __name__ == '__main__':
     import csv
     import sys
     import math
     import numpy
+    import matplotlib.pyplot as plt
     from sklearn.linear_model import LinearRegression
     from sklearn import cross_validation
     import statsmodels.api as sm
