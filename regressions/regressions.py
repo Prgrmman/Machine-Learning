@@ -47,7 +47,7 @@ def handleNominal(feature):
 def main(args):
 
 	if(len(args) != 4):
-		print("Incorrect number of args\nusage: python3 regressions.py math/language 5/10 linear/polynomial")
+		print("Incorrect number of args\nusage: python3 regressions.py math/language 5/10/all linear/polynomial")
 		return
 
 	path = ""
@@ -59,12 +59,18 @@ def main(args):
 	elif(args[1] == "math" and args[2] == '10'):
 		path = '../data/portugal/student-mat.csv'
 		training_data_indicies = [1,2,3,4,5,6,10,11,12,14,15,16,17,19]
+	elif(args[1] == "math" and args[2] == 'all'):
+		path = '../data/portugal/student-mat.csv'
+		training_data_indicies = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
 	elif(args[1] == "language" and args[2] == '5'):
 		path = '../data/portugal/student-por.csv'
 		training_data_indicies = [0,1,2,3,4,5,6,7,8,10,11,12,15,16,17,18,19,20,21,22,23]
 	elif(args[1] == "language" and args[2] == '10'):
 		path = '../data/portugal/student-por.csv'
 		training_data_indicies = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,18,19,20,21,22,23]
+	elif(args[1] == "language" and args[2] == 'all'):
+		path = '../data/portugal/student-por.csv'
+		training_data_indicies = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
 
 	isPolynomial = False
 	if(args[3] == "polynomial"):
