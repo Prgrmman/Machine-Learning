@@ -1,0 +1,22 @@
+According to the error histograms, it seems that linear and polynomial regression performs with similar
+amounts of error for the math dataset (using features of 10% significance polynomial regression appears better).
+
+As for the portugal language dataset, it seems that linear regression performs significantly better than polynomial regression.
+
+Overall, it seems the results predicted values with a minimal amount of error.
+
+#Features from F-test with significance of 5% math:
+#['sex', 'age', 'address', 'Medu', 'Fedu', 'Mjob', 'traveltime', 'failures', 'paid', 'higher', 'romantic', 'goout']
+
+#Features from F-test with significance of 10% math:
+#['sex', 'age', 'address', 'Medu', 'Fedu', 'Mjob', 'traveltime', 'studytime', 'failures', 'paid', 'higher', 
+'internet', 'romantic', 'goout']
+
+#Features from F-test with significance of 5% language:
+#['school', 'sex', 'age', 'address', 'Medu', 'Fedu', 'Mjob', 'Fjob', 'reason', 'traveltime', 'studytime', 
+'failures', 'higher','internet', 'romantic', 'freetime', 'goout', 'Dalc', 'Walc', 'health', 'absences']
+
+#Features from F-test with significance of 10% language:
+#['school', 'sex', 'age', 'address', 'Medu', 'Fedu', 'Mjob', 'Fjob', 'reason', 'guardian', 'traveltime', 
+#'studytime', 'failures', 'schoolsup', 'higher', 'internet', 'romantic', 'freetime', 'goout', 'Dalc', 
+'Walc', 'health', 'absences']
