@@ -78,6 +78,8 @@ Results on Portuguese language scores.
 Concluding comments:
 Overall, it appears that our feature selection technique did not hurt the performance of the logistic regression, with the possible exception of the Portuguese math scores. However, this experiment did demonstrate that many of that features may be removed from the various Portugal data sets without hurting performance, which speaks to those features’ relevance. 
 
+I also performed these tests with boosting using scikit learn’s built in implementation of Adaboost. However, performance worsened, which leads me too assume that the data was noisy and was hurt by boosting.
+
 
 
 

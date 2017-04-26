@@ -1,1 +1,1 @@
-../analysis/regressions.py
+../regressions/regressions.py
