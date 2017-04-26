@@ -46,8 +46,8 @@ def handleNominal(feature):
 
 def main(args):
 
-	if(len(args) != 3):
-		print("Incorrect number of args\nusage: python3 regressions.py math/language 5/10")
+	if(len(args) != 4):
+		print("Incorrect number of args\nusage: python3 regressions.py math/language 5/10 linear/polynomial")
 		return
 
 	path = ""
@@ -65,6 +65,10 @@ def main(args):
 	elif(args[1] == "language" and args[2] == '10'):
 		path = '../data/portugal/student-por.csv'
 		training_data_indicies = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,18,19,20,21,22,23]
+
+	isPolynomial = False
+	if(args[3] == "polynomial"):
+		isPolynomial = True
 
 	with open(path, 'r') as f:
 		reader = csv.reader(f)
@@ -140,6 +144,11 @@ def main(args):
     #use linear regression model
 	model = LinearRegression()
 
+	#polynomial regression adds columns which are polynomials of original data
+	if(isPolynomial):
+		poly = PolynomialFeatures(degree=2)
+		training_data = poly.fit_transform(training_data)
+
 	averagedPrediction = numpy.zeros(math.ceil((0.33*len(training_data))))
 	averagedPrediction = averagedPrediction.reshape(len(averagedPrediction),1)
 	averagedError = averagedPrediction
@@ -174,6 +183,7 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
     from sklearn.linear_model import LinearRegression
     from sklearn import cross_validation
+    from sklearn.preprocessing import PolynomialFeatures
     import statsmodels.api as sm
     from scipy import stats
     main(sys.argv)
