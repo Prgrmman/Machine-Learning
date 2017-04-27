@@ -115,7 +115,8 @@ def testSvm(raw):
 
 def main(args):
     if len(args) != 2:
-        print("please run as follows \n./svm.py <feature significance level> \nfeature significance level should be either 0, 5 or 10 (zero will use all of the variables")
+        print("please run as follows \n./svm.py <feature significance level> <kernel> \nfeature significance level should be either 0, 5 or 10 (zero will use all of the variables)")
+        sys.exit()
     mid = readIn(middle_east, int(args[1]), "midEast")
     math = readIn(portugal_math, int(args[1]), "math")
     por = readIn(portugal_por, int(args[1]), "por")
