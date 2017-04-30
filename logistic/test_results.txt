@@ -1,0 +1,37 @@
+	===Running tests on middle east data===
+Accuracy with penalty 0.001 -> 0.606502967144
+Accuracy with penalty 0.05 -> 0.644104067159
+Accuracy with penalty 0.1 -> 0.656315060067
+Accuracy with penalty 0.5 -> 0.655889455782
+	===Running tests on math===
+*** Using all features ***
+Accuracy with penalty 0.001 -> 0.592382739212
+Accuracy with penalty 0.05 -> 0.61744996873
+Accuracy with penalty 0.1 -> 0.635145403377
+Accuracy with penalty 0.5 -> 0.617324890557
+*** Using f-test 10 percent sig-level features ***
+Accuracy with penalty 0.001 -> 0.592382739212
+Accuracy with penalty 0.05 -> 0.584571607255
+Accuracy with penalty 0.1 -> 0.594757661038
+Accuracy with penalty 0.5 -> 0.612199812383
+*** Using f-test 5 percent sig-level features ***
+Accuracy with penalty 0.001 -> 0.592382739212
+Accuracy with penalty 0.05 -> 0.612263914947
+Accuracy with penalty 0.1 -> 0.60251094434
+Accuracy with penalty 0.5 -> 0.599571607255
+
+	===Running tests on language===
+Accuracy with penalty 0.001 -> 0.63960955711
+Accuracy with penalty 0.05 -> 0.673485576923
+Accuracy with penalty 0.1 -> 0.676539189977
+Accuracy with penalty 0.5 -> 0.665484411422
+*** Using f-test 10 percent sig-level features ***
+Accuracy with penalty 0.001 -> 0.64270979021
+Accuracy with penalty 0.05 -> 0.685796182984
+Accuracy with penalty 0.1 -> 0.687500728438
+Accuracy with penalty 0.5 -> 0.676752622378
+*** Using f-test 5 percent sig-level features ***
+Accuracy with penalty 0.001 -> 0.637928321678
+Accuracy with penalty 0.05 -> 0.675118735431
+Accuracy with penalty 0.1 -> 0.67353219697
+Accuracy with penalty 0.5 -> 0.669010780886
