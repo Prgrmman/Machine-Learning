@@ -2,6 +2,7 @@
 
 from sklearn.linear_model import LogisticRegression
 from sklearn import cross_validation
+from sklearn.model_selection import cross_val_score
 from sklearn.metrics import accuracy_score
 import csv
 import sys
@@ -90,114 +91,130 @@ def runLogistic(matrix, features_list_indexes, target_index, penalty_term):
     data_train, data_test, target_train, target_test = cross_validation.train_test_split(data, target, test_size = 0.33)
 
     logreg = LogisticRegression(C=penalty_term, multi_class='multinomial', solver='newton-cg') 
-    logreg.fit(data_train, target_train)
+    #logreg.fit(data_train, target_train)
 
-    predictions = logreg.predict(data_test)
-    accuracy = accuracy_score(target_test, predictions)
+    #predictions = logreg.predict(data_test)
+    #accuracy = accuracy_score(target_test, predictions)
+    accuracy = cross_val_score(logreg, data, target, cv=10) 
     return accuracy
 
 # runs 20 tests and returns the average
 def averageTest(matrix, features_list_indexes, target_index, penalty):
-    total = 0
-    for i in range(20):
-        accuracy = runLogistic(matrix, features_list_indexes, target_index, penalty)
-        print("Accuracy:", accuracy)
-        total += accuracy
-    print("Average accuracy for 20 iterations:" ,total / 20)
+    accs = runLogistic(matrix, features_list_indexes, target_index, penalty)
+    average = sum(accs) / len(accs)
+    print ("Accuracy for 10-fold cross validation:", average)
+
+# prints usage message and exits with error
+def usuage():
+    print("Usage:" + args[0], "middle_east/por_math/por_lang reg_constant 5/10/all")
+    sys.exit(1)
+
 
 def main(args):
+
+    # process arguments 
+    if len(args) != 4:
+        usuage()
+    chosen_data = args[1]
+    reg_constant = float(args[2])
+    which_features = args[3]
+
+    if not chosen_data in ["middle_east", "por_math", "por_lang"]:
+        print(chosen_data+ ":", "not valid data set name")
+        usuage()
+    if not which_features in ["5", "10", "all"]:
+        print(which_features+ ":", "not valid feature option")
+        usuage()
+
     middle_east_matrix = readData(middle_east_path)
     portugal_math_matrix = readData(portugal_math_path)
     portugal_por_matrix = readData(portugal_por_path)
 
-    print("running middle east")
-    print("\nSelecting features:")
-    indexes = list(range(16))
-    for index in indexes:
-        label = middle_east_matrix[0, index]
-        print(label)
-    
-    '''
-    running on middle east data
-    run average accuracy with 0.5 L2 penalty
-    '''
-    averageTest(middle_east_matrix, indexes, 16, 0.5)
+    if chosen_data == "middle_east":
+        print("running middle east")
+        print("\nSelecting features:")
+        indexes = list(range(16))
+        for index in indexes:
+            label = middle_east_matrix[0, index]
+            print(label)
+        
+        '''
+        running on middle east data
+        run average accuracy with 0.5 L2 penalty
+        '''
+        averageTest(middle_east_matrix, indexes, 16, reg_constant)
 
-    '''
-    Running portugal math data with no feature selection
-    Don't select index 0: it just contains which school they went too
-    '''
-    scores = portugal_math_matrix[1:,31]
-    scores = makeNominal(scores,3)
-    portugal_math_matrix[1:,31] = scores
-    print("running portugal math scores at 3 levels")
-    print("\nSelecting features:")
-    indexes = list(range(1,30))
-    for index in indexes:
-        label = portugal_math_matrix[0,index]
-        print(label)
+    elif chosen_data == "por_math":
+        scores = portugal_math_matrix[1:,32]
+        scores = makeNominal(scores,3)
+        portugal_math_matrix[1:,32] = scores
+        if which_features == "all":
+            '''
+            Running portugal math data with no feature selection
+            Don't select index 0: it just contains which school they went too
+            '''
+            print(portugal_math_matrix[0:,32])
+            print("running portugal math scores at 3 levels")
+            print("\nSelecting features:")
+            indexes = list(range(1,30))
+            for index in indexes:
+                label = portugal_math_matrix[0,index]
+                print(label)
+            averageTest(portugal_math_matrix, indexes, 32, reg_constant)
 
-    averageTest(portugal_math_matrix, indexes, 31, 0.01)
-    
-    '''
-    Running portugal math data with features selected from 10% significance level
-    '''
-    print("running portugal math scores at 3 levels with f-tested features at 10% sig level")
-    print("\nSelecting features:")
-    indexes = [1,2,3,6,7,8,12,13,14,17,20,21,22,25]
-    for index in indexes:
-        label = portugal_math_matrix[0,index]
-        print(label)
+        elif which_features == "10":
+            '''
+            Running portugal math data with features selected from 10% significance level
+            '''
+            print("running portugal math scores at 3 levels with f-tested features at 10% sig level")
+            print("\nSelecting features:")
+            indexes = [1,2,3,6,7,8,12,13,14,17,20,21,22,25]
+            for index in indexes:
+                label = portugal_math_matrix[0,index]
+                print(label)
 
-    averageTest(portugal_math_matrix, indexes, 31, 0.1)
+            averageTest(portugal_math_matrix, indexes, 32, reg_constant)
+        elif which_features == "5":
+            '''
+            Running portugal math scores at 3 levels with f-tested features at 5% significance level
+            '''
+            print("running portugal math scores at 3 levels with f-tested features at 5% sig level")
+            print("\nSelecting features:")
+            indexes = [1,2,3,6,7,8,12,14,17,20,22,25]
+            for index in indexes:
+                label = portugal_math_matrix[0,index]
+                print(label)
+            averageTest(portugal_math_matrix, indexes, 32, reg_constant)
 
-    '''
-    Running portugal math scores at 3 levels with f-tested features at 5% significance level
-    '''
-    print("running portugal math scores at 3 levels with f-tested features at 5% sig level")
-    print("\nSelecting features:")
-    indexes = [1,2,3,6,7,8,12,14,17,20,22,25]
-    for index in indexes:
-        label = portugal_math_matrix[0,index]
-        print(label)
-    averageTest(portugal_math_matrix, indexes, 31, 0.001)
+    elif chosen_data == "por_lang":
+        scores = portugal_por_matrix[1:,32]
+        scores = makeNominal(scores,3)
+        portugal_por_matrix[1:,32] = scores
+        if which_features == "all":
+            print("running portugal language scores at 3 levels")
+            print("\nSelecting features:")
+            indexes = list(range(1,30))
+            for index in indexes:
+                label = portugal_por_matrix[0,index]
+                print(label)
+            averageTest(portugal_por_matrix, indexes, 32, reg_constant)
+        elif which_features == "10":
+            print("running portugal language scores at 3 levels with f-tested features at 10% sig level")
+            print("\nSelecting features:")
+            indexes = [0,1,2,3,6,7,8,9,12,11,12,13,14,15,20,21,22,24,25,26,27,28,29]
+            for index in indexes:
+                label = portugal_por_matrix[0,index]
+                print(label)
+            averageTest(portugal_por_matrix, indexes, 32, reg_constant)
 
-    '''
-    Running protugal language scores with no feature selection. Uses three score levels
-    Don't select index 0: it just contains which school they went too
-    '''
-    scores = portugal_por_matrix[1:,31]
-    scores = makeNominal(scores,3)
-    portugal_por_matrix[1:,31] = scores
-    print("running portugal language scores at 3 levels")
-    print("\nSelecting features:")
-    indexes = list(range(1,30))
-    for index in indexes:
-        label = portugal_por_matrix[0,index]
-        print(label)
-    averageTest(portugal_por_matrix, indexes, 31, 0.5)
-
-    '''
-    Running protugal language scores at 3 levels with f-tested features at 10% significance level
-    '''
-    print("running portugal language scores at 3 levels with f-tested features at 10% sig level")
-    print("\nSelecting features:")
-    indexes = [0,1,2,3,6,7,8,9,12,11,12,13,14,15,20,21,22,24,25,26,27,28,29]
-    for index in indexes:
-        label = portugal_por_matrix[0,index]
-        print(label)
-    averageTest(portugal_por_matrix, indexes, 31, 0.5)
-
-    '''
-    Running protugal language scores at 3 levels with f-tested features at 5% significance level
-    '''
-    print("running portugal language scores at 3 levels with f-tested features at 5% sig level")
-    print("\nSelecting features:")
-    indexes = [0,1,2,3,6,7,8,9,10,12,13,14,20,22,24,25,26,27,28,29]
-    for index in indexes:
-        label = portugal_por_matrix[0,index]
-        print(label)
-    averageTest(portugal_por_matrix, indexes, 31, 0.5)
+        elif which_features == "5":
+            print("running portugal language scores at 3 levels with f-tested features at 5% sig level")
+            print("\nSelecting features:")
+            indexes = [0,1,2,3,6,7,8,9,10,12,13,14,20,22,24,25,26,27,28,29]
+            for index in indexes:
+                label = portugal_por_matrix[0,index]
+                print(label)
+            averageTest(portugal_por_matrix, indexes, 32, reg_constant)
 
 if __name__ == '__main__':
     main(sys.argv)
