@@ -159,7 +159,7 @@ def correlate(index1, index2, setName = 'student-mat.csv'):
 
 def main(args):
     if len(args) != 3:
-        print("use: plotter.py var-index-1 var-index-2")
+        print("use:",args[0],"var-index-1 var-index-2")
         return
 
     # show the user which attributes they selected

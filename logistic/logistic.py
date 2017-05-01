@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-
+# ignores scikit learn warnings
 def warn(*args,**kwargs):
     pass
 import warnings
@@ -146,10 +146,6 @@ def main(args):
             label = middle_east_matrix[0, index]
             verbose_print(label)
         
-        '''
-        running on middle east data
-        run average accuracy with 0.5 L2 penalty
-        '''
         averageTest(middle_east_matrix, indexes, 16, reg_constant)
 
     elif chosen_data == "por_math":
@@ -157,10 +153,6 @@ def main(args):
         scores = makeNominal(scores,3)
         portugal_math_matrix[1:,32] = scores
         if which_features == "all":
-            '''
-            Running portugal math data with no feature selection
-            Don't select index 0: it just contains which school they went too
-            '''
             verbose_print("running portugal math scores at 3 levels")
             verbose_print("\nSelecting features:")
             indexes = list(range(1,30))
@@ -170,9 +162,6 @@ def main(args):
             averageTest(portugal_math_matrix, indexes, 32, reg_constant)
 
         elif which_features == "10":
-            '''
-            Running portugal math data with features selected from 10% significance level
-            '''
             verbose_print("running portugal math scores at 3 levels with f-tested features at 10% sig level")
             verbose_print("\nSelecting features:")
             indexes = [1,2,3,6,7,8,12,13,14,17,20,21,22,25]
@@ -182,9 +171,6 @@ def main(args):
 
             averageTest(portugal_math_matrix, indexes, 32, reg_constant)
         elif which_features == "5":
-            '''
-            Running portugal math scores at 3 levels with f-tested features at 5% significance level
-            '''
             verbose_print("running portugal math scores at 3 levels with f-tested features at 5% sig level")
             verbose_print("\nSelecting features:")
             indexes = [1,2,3,6,7,8,12,14,17,20,22,25]

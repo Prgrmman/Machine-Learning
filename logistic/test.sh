@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 
+# Script to test different penalty terms
 
 function testLog(){
 	values=(0.001 0.05 0.1 0.5)
@@ -12,7 +13,6 @@ function testLog(){
 
 printf "\t===Running tests on middle east data===\n"
 testLog middle_east all
-
 
 
 printf "\t===Running tests on math===\n"

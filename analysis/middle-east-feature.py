@@ -6,6 +6,7 @@ import scipy as stats
 import statsmodels.api as sm
 import numpy as np
 from regressions import handleNominal
+from sklearn.feature_selection import chi2
 
 
 '''
@@ -76,11 +77,11 @@ def fTest(X,Y):
 # does chi-square test for independence
 # X and Y are lists of values (string form)
 def chiSquareTest(X,Y):
-    print("using chi-square test for independence")
     X = nominalMap(X)
     Y = nominalMap(Y)
+    print("First is", X[0])
     data = [X,Y]
-    results = stats.stats.chi2_contingency(data)
+    results = chi2(X,Y)
     return results[1]
 
 
