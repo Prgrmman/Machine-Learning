@@ -100,7 +100,6 @@ def runLogistic(matrix, features_list_indexes, target_index, penalty_term):
         data = np.hstack((data, feature))
     target = matrix[1:, target_index]
 
-    data_train, data_test, target_train, target_test = cross_validation.train_test_split(data, target, test_size = 0.33)
 
     logreg = LogisticRegression(C=penalty_term, multi_class='multinomial', solver='newton-cg') 
     accuracy = cross_val_score(logreg, data, target, cv=10) 

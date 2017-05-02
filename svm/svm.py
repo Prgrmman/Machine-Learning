@@ -2,6 +2,7 @@
 
 from sklearn import svm
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import cross_val_score
 from sklearn import cross_validation
 import csv
 import random
@@ -99,18 +100,17 @@ def runSvm(raw):
         data.append(row[0:-1])
         target.append(row[-1])
 
-    clf = svm.SVC(kernel = 'rbf')
+    clf = svm.SVC(C=1, kernel = 'rbf')
     data_train, data_test, target_train, target_test = cross_validation.train_test_split(data, target, test_size = 0.33, random_state = random.randrange(0,50) )
-    clf.fit(data_train, target_train)
-    predicts = clf.predict(data_test)
-    acc  = accuracy_score(target_test, predicts)
+    
+    
+    acc  = cross_val_score(clf, data, target, cv=10) 
     return acc
 
 def testSvm(raw):
-    total = 0.0
-    for i in range(0, 25):
-        total += runSvm(raw) * 100
-    acc = total/25.0
+    tests = runSvm(raw)
+    acc = sum(tests)/len(tests)
+    
     return acc
 
 def main(args):
