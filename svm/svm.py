@@ -91,7 +91,7 @@ def cleanSets(setName, raw, sigLevel):
     return data
 
 
-def runSvm(raw):
+def runSvm(raw, kernelType):
     labels = raw[0]
     data = []
     target = []
@@ -100,39 +100,33 @@ def runSvm(raw):
         data.append(row[0:-1])
         target.append(row[-1])
 
-    clf = svm.SVC(C=1, kernel = 'rbf')
+    clf = svm.SVC(C=1, kernel = kernelType)
 
 
     acc  = cross_val_score(clf, data, target, cv=10)
     return acc
 
-def testSvm(raw):
-    tests = runSvm(raw)
+def testSvm(raw, kernelType):
+    tests = runSvm(raw, kernelType)
     acc = sum(tests)/len(tests)
 
     return acc
 
 def main(args):
-    if len(args) != 2:
+    if len(args) != 3:
         print("please run as follows \n./svm.py <feature significance level> \nfeature significance level should be either 0, 5 or 10 (zero will use all of the variables)")
         sys.exit()
     mid = readIn(middle_east, int(args[1]), "midEast")
     math = readIn(portugal_math, int(args[1]), "math")
     por = readIn(portugal_por, int(args[1]), "por")
 
-    #middle east (having trouble with values being too big)
-    '''
-    print("Starting middle east")
-    acc = runSvm(mid)
-    print("mid east accuracy is: ", acc)
-    '''
     #portugal-math
     print("Starting portugal math")
-    acc = testSvm(math)
+    acc = testSvm(math, args[2])
     print("portugal math accuracy is: ", acc)
 
     print("Starting portugal language")
-    acc = testSvm(por)
+    acc = testSvm(por, args[2])
     print("portugal language accuracy is: ", acc)
 
 if __name__ == '__main__':
