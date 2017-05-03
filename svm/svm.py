@@ -101,21 +101,20 @@ def runSvm(raw):
         target.append(row[-1])
 
     clf = svm.SVC(C=1, kernel = 'rbf')
-    data_train, data_test, target_train, target_test = cross_validation.train_test_split(data, target, test_size = 0.33, random_state = random.randrange(0,50) )
-    
-    
-    acc  = cross_val_score(clf, data, target, cv=10) 
+
+
+    acc  = cross_val_score(clf, data, target, cv=10)
     return acc
 
 def testSvm(raw):
     tests = runSvm(raw)
     acc = sum(tests)/len(tests)
-    
+
     return acc
 
 def main(args):
     if len(args) != 2:
-        print("please run as follows \n./svm.py <feature significance level> <kernel> \nfeature significance level should be either 0, 5 or 10 (zero will use all of the variables)")
+        print("please run as follows \n./svm.py <feature significance level> \nfeature significance level should be either 0, 5 or 10 (zero will use all of the variables)")
         sys.exit()
     mid = readIn(middle_east, int(args[1]), "midEast")
     math = readIn(portugal_math, int(args[1]), "math")
